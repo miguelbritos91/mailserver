@@ -9,7 +9,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*')
+    res.header('Access-Control-Allow-Origin', 'https://style-web.net')
     res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-COntrol-Allow-Request-Method')
     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE')
     res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE')
@@ -24,8 +24,8 @@ app.post("/mail/send", (req, res)=>{
         service: 'Gmail',
         secure: true,
         auth: {
-          user: 'styleweb.net@gmail.com',
-          pass: 'hvziuphlnlnvbovj'
+          user: process.env.EMAIL_SERVER,
+          pass: process.env.PASS_EMAIL
         },
         tls: {
           rejectUnauthorized: false
@@ -56,16 +56,16 @@ app.post("/mail/send", (req, res)=>{
       </body>`
 
     const mailOptionsAdmin = {
-        from: 'style-web <styleweb.net@gmail.com>',
+        from: 'style-web <'+ process.env.EMAIL_SERVER +'>',
         subject: 'Nuevo Contacto de styleweb.net',
         html: templeteAdmin,
-        to: 'styleweb.net@gmail.com'
+        to: process.env.EMAIL_SERVER
     }
     const mailOptionsUser = {
-        from: 'style-web <styleweb.net@gmail.com>',
+        from: 'style-web <'+ process.env.EMAIL_SERVER +'>',
         subject: 'Hemos recibido tu consulta',
         html: templateUser,
-        to: 'miguelbritos91@gmail.com'
+        to: email
     }
 
     transporter.sendMail(mailOptionsAdmin, (err, info) => {
